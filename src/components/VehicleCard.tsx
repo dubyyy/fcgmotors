@@ -31,7 +31,7 @@ export default function VehicleCard({ image, brand, model, year, price, mileage 
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
         <img
-          src={typeof image === 'string' ? image : image.src}
+          src={typeof image === 'string' ? image : (image?.src || '')}
           alt={`${year} ${brand} ${model}`}
           className="w-full h-full object-cover img-editorial transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
           loading="lazy"
