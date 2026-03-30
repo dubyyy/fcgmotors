@@ -25,23 +25,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { addSparePart, getSpareParts, deleteSparePart, updateSparePart } from "../actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1];
-
-const categoryOptions = [
-  "Engine Parts",
-  "Brake Systems",
-  "Suspension",
-  "Electrical Parts",
-  "Filters",
-  "Interior",
-  "Body Parts",
-  "Lights",
-];
 
 export default function PartsInventoryPage() {
   const [loading, setLoading] = useState(false);
@@ -244,17 +232,8 @@ export default function PartsInventoryPage() {
                       <Input name="part_number" defaultValue={editingPart?.partNumber} placeholder="OEM-TRB-45X9" required className="bg-slate-50 border-none h-12 md:h-14 rounded-xl focus:ring-emerald-500/20" />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Category System</Label>
-                      <Select name="category" defaultValue={editingPart?.category} required>
-                        <SelectTrigger className="bg-slate-50 border-none h-12 md:h-14 rounded-xl focus:ring-emerald-500/20">
-                          <SelectValue placeholder="System Selection" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-xl border-slate-100 shadow-xl">
-                          {categoryOptions.map(cat => (
-                            <SelectItem key={cat} value={cat} className="rounded-lg h-10">{cat}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Category / Type</Label>
+                      <Input name="category" defaultValue={editingPart?.category || "Engine Parts"} placeholder="e.g. Engine Parts, Brake Systems, Suspension" required className="bg-slate-50 border-none h-12 md:h-14 rounded-xl focus:ring-emerald-500/20" />
                     </div>
                     <div className="space-y-2">
                       <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Inventory Price (₦)</Label>

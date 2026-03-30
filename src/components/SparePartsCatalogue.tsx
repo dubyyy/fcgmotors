@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { MessageCircle, Cog, Disc3, Zap, Filter, Sofa, Car, Lightbulb, CircuitBoard } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 interface SparePart {
   id: number;
@@ -21,18 +21,6 @@ interface SparePartsCatalogueProps {
   initialParts: SparePart[];
 }
 
-const categories = [
-  { label: "All", icon: null },
-  { label: "Engine Parts", icon: Cog },
-  { label: "Brake Systems", icon: Disc3 },
-  { label: "Suspension", icon: Car },
-  { label: "Electrical Parts", icon: CircuitBoard },
-  { label: "Filters", icon: Filter },
-  { label: "Interior", icon: Sofa },
-  { label: "Body Parts", icon: Car },
-  { label: "Lights", icon: Lightbulb },
-];
-
 const WHATSAPP_BASE = "https://wa.me/2348030523555?text=";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const fadeUp = {
@@ -43,9 +31,11 @@ const fadeUp = {
 export default function SparePartsCatalogue({ initialParts }: SparePartsCatalogueProps) {
   const [activeCategory, setActiveCategory] = useState("All");
 
+  const dynamicCategories = ["All", ...Array.from(new Set(initialParts.map(p => p.category).filter(Boolean)))];
+
   const filtered = activeCategory === "All" 
     ? initialParts 
-    : initialParts.filter((p) => p.category.toLowerCase() === activeCategory.toLowerCase());
+    : initialParts.filter((p) => p.category?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
     <div className="container">
@@ -55,19 +45,19 @@ export default function SparePartsCatalogue({ initialParts }: SparePartsCatalogu
         <p className="mt-3 text-muted-foreground max-w-lg">Genuine, authenticated parts for all major vehicle brands.</p>
       </div>
 
-      {/* Category Filter */}
+      {/* Dynamic Filters */}
       <div className="flex overflow-x-auto scroller-hide gap-2 sm:gap-3 mb-8 sm:mb-10 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
-        {categories.map((c) => (
+        {dynamicCategories.map((cat) => (
           <button
-            key={c.label}
-            onClick={() => setActiveCategory(c.label)}
-            className={`flex-shrink-0 px-4 py-2 rounded-btn text-[13px] sm:text-sm font-medium transition-colors duration-200 border ${
-              activeCategory === c.label
-                ? "gold-action border-primary"
-                : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"
+            key={cat}
+            onClick={() => setActiveCategory(cat as string)}
+            className={`flex-shrink-0 px-5 py-2.5 rounded-full text-[13px] sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border ${
+              activeCategory === cat
+                ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
+                : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 hover:bg-slate-50"
             }`}
           >
-            {c.label}
+            {cat as string}
           </button>
         ))}
       </div>
