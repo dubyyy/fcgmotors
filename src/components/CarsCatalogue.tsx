@@ -10,8 +10,9 @@ interface Car {
   model: string;
   year: number;
   price: string;
-  category: string;
-  imageUrls: string[];
+  category?: string;
+  imageUrls?: string[];
+  imageUrl?: string;
   description: string;
 }
 
@@ -42,7 +43,7 @@ export default function CarsCatalogue({ initialCars }: CarsCatalogueProps) {
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() => setActiveCategory(cat)}
+            onClick={() => setActiveCategory(cat as string)}
             className={`flex-shrink-0 px-5 py-2.5 rounded-full text-[13px] sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 border ${
               activeCategory === cat
                 ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
@@ -70,7 +71,7 @@ export default function CarsCatalogue({ initialCars }: CarsCatalogueProps) {
             >
               <VehicleCard 
                 id={v.id}
-                image={v.imageUrls?.[0]}
+                image={v.imageUrls?.[0] || v.imageUrl || ""}
                 brand={v.brand}
                 model={v.model}
                 year={v.year.toString()}

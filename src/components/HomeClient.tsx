@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Shield, Package, Truck, ArrowRight, MessageCircle, ChevronRight, Cog, Disc3, Zap, Filter, Sofa, Car, Lightbulb, CircuitBoard, Star, Quote, CheckCircle } from "lucide-react";
 import VehicleCard from "@/components/VehicleCard";
@@ -113,10 +114,13 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
       />
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-end overflow-hidden">
-        <img
-          src={heroImg.src}
+        <Image
+          src={heroImg}
           alt="Modern FGC Autos showroom featuring premium luxury cars in Nigeria"
-          className="absolute inset-0 w-full h-full object-cover img-editorial"
+          fill
+          priority
+          className="object-cover img-editorial"
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/40" />
         <div className="relative container pb-16 sm:pb-20 md:pb-28 pt-32 sm:pt-40">
@@ -330,7 +334,13 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
               transition={{ duration: 1, ease: EASE }}
               className="relative aspect-square lg:aspect-[4/5] rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl"
             >
-              <img src={importImg.src} alt="Global car importation service from USA and Canada to Nigeria - FGC Autos" className="w-full h-full object-cover img-editorial scale-110" />
+              <Image 
+                src={importImg} 
+                alt="Global car importation service from USA and Canada to Nigeria - FGC Autos" 
+                fill
+                className="object-cover img-editorial scale-110" 
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               <div className="absolute bottom-4 sm:bottom-6 md:bottom-10 left-4 sm:left-6 md:left-10 right-4 sm:right-6 md:left-10">
                 <div className="backdrop-blur-xl bg-black/40 p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] border border-white/10 shadow-2xl relative overflow-hidden group">

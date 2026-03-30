@@ -1,23 +1,7 @@
 'use server'
 
-import cloudinary from '@/lib/cloudinary';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-
-async function uploadToCloudinary(file: File) {
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload_stream(
-      { folder: 'drive-nigeria-v2' },
-      (error, result) => {
-        if (error) reject(error);
-        else resolve(result?.secure_url);
-      }
-    ).end(buffer);
-  });
-}
 
 export async function addCar(formData: FormData) {
   try {
@@ -39,6 +23,7 @@ export async function addCar(formData: FormData) {
 
     revalidatePath('/admin');
     revalidatePath('/cars');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error adding car:', error);
@@ -65,6 +50,7 @@ export async function addSparePart(formData: FormData) {
 
     revalidatePath('/admin');
     revalidatePath('/spare-parts');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error adding spare part:', error);
@@ -101,6 +87,7 @@ export async function updateCarPrice(id: number, price: string) {
     });
     revalidatePath('/admin');
     revalidatePath('/cars');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error updating car price:', error);
@@ -116,6 +103,7 @@ export async function updateSparePartPrice(id: number, price: string) {
     });
     revalidatePath('/admin');
     revalidatePath('/spare-parts');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error updating spare part price:', error);
@@ -130,6 +118,7 @@ export async function deleteCar(id: number) {
     });
     revalidatePath('/admin');
     revalidatePath('/cars');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting car:', error);
@@ -144,6 +133,7 @@ export async function deleteSparePart(id: number) {
     });
     revalidatePath('/admin');
     revalidatePath('/spare-parts');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting spare part:', error);
@@ -181,6 +171,7 @@ export async function updateCar(id: number, formData: FormData) {
 
     revalidatePath('/admin');
     revalidatePath('/cars');
+    revalidatePath('/');
     return { success: true };
   } catch (error: any) {
     console.error('Error updating car:', error);

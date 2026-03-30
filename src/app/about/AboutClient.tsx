@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Shield, Users, Award, Zap, Globe, Package, CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRef } from "react";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -40,10 +41,13 @@ export default function AboutClient() {
           className="absolute inset-0 z-0 bg-black"
           style={{ opacity: heroImageOpacity }}
         >
-          <img 
+          <Image 
             src="/about_hero.png" 
             alt="FGC Autos Luxury" 
-            className="w-full h-full object-cover grayscale brightness-[0.4]"
+            fill
+            priority
+            className="object-cover grayscale brightness-[0.4]"
+            sizes="100vw"
           />
         </motion.div>
         
@@ -79,10 +83,12 @@ export default function AboutClient() {
               transition={{ duration: 1, ease: EASE }}
             >
               <div className="relative aspect-[4/5] md:aspect-square rounded-2xl overflow-hidden group">
-                <img 
+                <Image 
                   src="/about_story.png" 
                   alt="Craftsmanship" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-transparent" />
               </div>
@@ -232,14 +238,16 @@ export default function AboutClient() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 1, ease: EASE }}
-                  className="relative group"
+                  className="relative group aspect-video lg:aspect-square overflow-hidden rounded-2xl"
                 >
                   <div className="absolute -top-12 -right-12 w-40 h-40 bg-muted/50 rounded-full blur-3xl z-0" />
                   <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl z-0" />
-                  <img 
+                  <Image 
                     src="https://images.unsplash.com/photo-1549399542-7e3f8b79c34b?q=80&w=2070&auto=format&fit=crop" 
                     alt="Luxury Interior" 
-                    className="relative z-10 rounded-2xl grayscale contrast-125 transition-all duration-700 group-hover:grayscale-0 shadow-lg"
+                    fill
+                    className="relative z-10 grayscale contrast-125 transition-all duration-700 group-hover:grayscale-0 shadow-lg object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                   />
                   <div className="absolute inset-0 z-20 border-[20px] border-background -m-8 pointer-events-none rounded-2xl hidden lg:block" />
                 </motion.div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { MessageCircle, Cog, Disc3, Zap, Filter, Sofa, Car, Lightbulb, CircuitBoard } from "lucide-react";
 
 interface SparePart {
@@ -83,11 +84,12 @@ export default function SparePartsCatalogue({ initialParts }: SparePartsCatalogu
           >
             {/* Image Section */}
             <div className="relative aspect-[5/4] overflow-hidden bg-secondary">
-               <img 
-                 src={part.imageUrls?.[0] || part.imageUrl} 
+               <Image 
+                 src={part.imageUrls?.[0] || part.imageUrl || "/placeholder.jpg"} 
                  alt={part.name} 
-                 className="w-full h-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-                 loading="lazy"
+                 fill
+                 className="object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                />
                <div className="absolute top-3 left-3 bg-primary/90 backdrop-blur-sm text-primary-foreground text-[8px] uppercase tracking-widest font-bold px-2 py-1 rounded-sm">
                  {part.category}

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Browse 100% genuine OEM spare parts in Nigeria. We stock engine parts, brake systems, suspension, and more for all major luxury car brands.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export default async function SpareParts() {
   const spareParts = await getSpareParts();

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 interface VehicleCardProps {
   id?: string | number;
@@ -22,6 +23,8 @@ export default function VehicleCard({ id, image, brand, model, year, price, mile
     `I'm interested in the ${year} ${brand} ${model} (${price}). Is it available for inspection?`
   );
 
+  const imageSrc = typeof image === 'string' ? image : (image?.src || '');
+
   return (
     <motion.div
       className="group bg-card border border-border/60 rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2"
@@ -31,11 +34,15 @@ export default function VehicleCard({ id, image, brand, model, year, price, mile
     >
       {/* Image Container */}
       <div className="relative aspect-[16/10] overflow-hidden">
-        <img
-          src={typeof image === 'string' ? image : (image?.src || '')}
-          alt={`${year} ${brand} ${model}`}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
+        {imageSrc && (
+          <Image
+            src={imageSrc}
+            alt={`${year} ${brand} ${model}`}
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         
         <div className="absolute top-4 left-4">
