@@ -82,8 +82,8 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
             "telephone": "+2348030523555",
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "Showroom Address",
-              "addressLocality": "Lagos",
+              "streetAddress": "154 Obafemi Awolowo Way, Central Business District",
+              "addressLocality": "Ikeja",
               "addressRegion": "Lagos State",
               "addressCountry": "NG"
             },

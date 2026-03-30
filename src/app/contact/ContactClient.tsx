@@ -85,7 +85,7 @@ export default function ContactClient() {
                     <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">Official WhatsApp</a>
                   </li>
                   <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-primary" /> ceo@fgcautosltd.com</li>
-                  <li className="flex items-start gap-3"><MapPin className="w-5 h-5 text-primary mt-0.5" /> Lagos, Nigeria</li>
+                  <li className="flex items-start gap-3"><MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" /> <span className="flex-1">154 Obafemi Awolowo Way, Central Business District, Ikeja, Lagos</span></li>
                 </ul>
               </div>
 

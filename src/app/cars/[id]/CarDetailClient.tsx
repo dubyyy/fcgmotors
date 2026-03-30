@@ -172,7 +172,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
              <div className="p-8 rounded-[2rem] bg-slate-50 space-y-4">
                 <MapPin className="w-8 h-8 text-slate-900" />
                 <h3 className="font-bold text-lg uppercase tracking-wider">Showroom Presence</h3>
-                <p className="text-sm text-slate-500 font-medium">Victoria Island Flagship Store, Lagos, Nigeria. Available for viewing by appointment.</p>
+                <p className="text-sm text-slate-500 font-medium">154 Obafemi Awolowo Way, Central Business District, Ikeja, Lagos. Available for viewing by appointment.</p>
              </div>
              <div className="p-8 rounded-[2rem] bg-slate-900 text-white space-y-4">
                 <Zap className="w-8 h-8 text-white" />

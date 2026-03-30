@@ -53,7 +53,7 @@ export default function Footer() {
               <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary shrink-0" /><span>+234 803 052 3555</span></li>
               <li className="flex items-center gap-2"><MessageCircle className="w-4 h-4 text-primary shrink-0" /><span>WhatsApp</span></li>
               <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary shrink-0" /><span>ceo@fgcautosltd.com</span></li>
-              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" /><span>Lagos, Nigeria</span></li>
+              <li className="flex items-start gap-2"><MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" /><span>154 Obafemi Awolowo Way, Central Business District, Ikeja, Lagos</span></li>
             </ul>
           </div>
 
