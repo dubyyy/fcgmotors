@@ -7,12 +7,13 @@ import { MessageCircle, Cog, Disc3, Zap, Filter, Sofa, Car, Lightbulb, CircuitBo
 interface SparePart {
   id: number;
   name: string;
-  partNumber?: string;
+  partNumber?: string | null;
   category: string;
   price: string;
-  imageUrls: string[];
+  imageUrls?: string[];
   imageUrl?: string;
   description: string;
+  createdAt?: Date;
 }
 
 interface SparePartsCatalogueProps {

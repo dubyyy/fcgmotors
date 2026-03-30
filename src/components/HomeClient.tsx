@@ -68,11 +68,54 @@ const staggerSlow = {
 export default function HomeClient({ vehicles }: { vehicles: any[] }) {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CarDealer",
+            "name": "FGC Autos",
+            "image": "https://fgcautos.com/og-image.jpg",
+            "@id": "https://fgcautos.com",
+            "url": "https://fgcautos.com",
+            "telephone": "+2348030523555",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Showroom Address",
+              "addressLocality": "Lagos",
+              "addressRegion": "Lagos State",
+              "addressCountry": "NG"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 6.5244,
+              "longitude": 3.3792
+            },
+            "openingHoursSpecification": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+              ],
+              "opens": "08:00",
+              "closes": "18:00"
+            },
+            "sameAs": [
+              "https://www.instagram.com/fgcautos",
+              "https://www.facebook.com/fgcautos"
+            ]
+          })
+        }}
+      />
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-end overflow-hidden">
         <img
           src={heroImg.src}
-          alt="FGC Autos Showroom"
+          alt="Modern FGC Autos showroom featuring premium luxury cars in Nigeria"
           className="absolute inset-0 w-full h-full object-cover img-editorial"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/40" />
@@ -90,7 +133,7 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
             >
               Premium Cars <span className="italic font-light opacity-80">&</span> <br/>Genuine <span className="italic">Spare Parts</span>
             </motion.h1>
-            <motion.p variants={fadeUp} className="mt-8 text-base md:text-xl text-background/70 leading-relaxed max-w-lg font-medium">
+            <motion.p variants={fadeUp} className="mt-8 text-base md:text-xl text-background leading-relaxed max-w-lg font-medium opacity-100">
               Curating Nigeria's finest automotive collection and authentic components for the discerning driver.
             </motion.p>
             <motion.div variants={fadeUp} className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4">
@@ -119,8 +162,39 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col">
                 <p className="font-display text-3xl sm:text-4xl font-bold text-white tabular-price">{s.value}</p>
-                <p className="spec-label text-white/50 mt-1 sm:mt-2 text-[9px] sm:text-[10px]">{s.label}</p>
+                <p className="spec-label text-white/90 mt-1 sm:mt-2 text-[10px] sm:text-[11px] font-bold">{s.label}</p>
               </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* BRAND CAROUSEL */}
+      <section className="py-12 md:py-20 bg-background border-y border-border/40 overflow-hidden relative group">
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10 pointer-events-none" />
+        <div className="container mb-8 md:mb-12 relative z-20">
+          <p className="spec-label text-center text-muted-foreground/70 text-[9px] md:text-[10px] tracking-[0.4em] font-bold uppercase transition-colors group-hover:text-foreground duration-500">Curating the World's Finest Names</p>
+        </div>
+        <div className="relative flex whitespace-nowrap overflow-hidden">
+          <motion.div 
+            animate={{ x: [0, -2500] }}
+            transition={{ 
+              duration: 60, 
+              repeat: Infinity, 
+              ease: "linear" 
+            }}
+            className="flex items-center gap-16 md:gap-32 pr-16 md:pr-32"
+          >
+            {[
+              "MERCEDES-BENZ", "LAND ROVER", "TOYOTA", "PORSCHE", "BMW", "LEXUS", "AUDI", "ROLLS-ROYCE", "BENTLEY", "LAMBORGHINI", "FERRARI", "MAYBACH",
+              "MERCEDES-BENZ", "LAND ROVER", "TOYOTA", "PORSCHE", "BMW", "LEXUS", "AUDI", "ROLLS-ROYCE", "BENTLEY", "LAMBORGHINI", "FERRARI", "MAYBACH"
+            ].map((brand, i) => (
+              <span 
+                key={i} 
+                className="text-3xl md:text-6xl font-display font-medium tracking-tighter text-foreground/5 hover:text-foreground/20 transition-all duration-700 cursor-default select-none group-hover:scale-105"
+              >
+                {brand}
+              </span>
             ))}
           </motion.div>
         </div>
@@ -227,9 +301,9 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
                 Global Network
               </motion.div>
               <motion.h2 variants={fadeUpLarge} className="font-display text-4xl sm:text-5xl lg:text-7xl font-medium tracking-tight mb-8 leading-[1.05]">
-                Importation,<br/><span className="text-white/40 italic font-light">Redefined.</span>
+                Importation,<br/><span className="text-white/60 italic font-light">Redefined.</span>
               </motion.h2>
-              <motion.p variants={fadeUpLarge} className="text-lg sm:text-xl text-secondary-foreground/70 leading-relaxed mb-12">
+              <motion.p variants={fadeUpLarge} className="text-lg sm:text-xl text-secondary-foreground leading-relaxed mb-12 opacity-100">
                 Seamlessly source, inspect, and import exclusive vehicles from the US, Canada, and Europe. Absolute transparency, uncompromising care.
               </motion.p>
               
@@ -243,7 +317,7 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
                       <div className="absolute left-4 top-11 bottom-[-30px] w-[2px] bg-white/10 group-hover:bg-white/40 transition-colors duration-300" />
                     )}
                     <h3 className="text-2xl font-bold text-secondary-foreground mb-2">{s.title}</h3>
-                    <p className="text-lg text-secondary-foreground/60 leading-relaxed">{s.desc}</p>
+                    <p className="text-lg text-secondary-foreground/85 leading-relaxed font-medium">{s.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -256,7 +330,7 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
               transition={{ duration: 1, ease: EASE }}
               className="relative aspect-square lg:aspect-[4/5] rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl"
             >
-              <img src={importImg.src} alt="Import Service" className="w-full h-full object-cover img-editorial scale-110" />
+              <img src={importImg.src} alt="Global car importation service from USA and Canada to Nigeria - FGC Autos" className="w-full h-full object-cover img-editorial scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               <div className="absolute bottom-4 sm:bottom-6 md:bottom-10 left-4 sm:left-6 md:left-10 right-4 sm:right-6 md:left-10">
                 <div className="backdrop-blur-xl bg-black/40 p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] border border-white/10 shadow-2xl relative overflow-hidden group">
@@ -387,6 +461,118 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
         </div>
       </section>
 
+      {/* INTERACTIVE FAQ */}
+      <section className="section-padding bg-muted/20 relative">
+        <div className="container relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            <div>
+              <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+                <p className="spec-label text-primary mb-6">Expertise & Transparency</p>
+                <h2 className="font-display text-4xl md:text-5xl lg:text-7xl font-medium tracking-tight text-foreground mb-8 leading-[1.1]">
+                  Your Questions,<br/><span className="italic font-light">Answered.</span>
+                </h2>
+                <p className="text-muted-foreground text-lg md:text-xl font-medium mb-12">
+                  Navigating the luxury automotive market requires trust. We're here to provide total clarity on our process.
+                </p>
+                <div className="p-8 rounded-3xl bg-background border border-border shadow-xl shadow-black/5 flex items-start gap-6">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-8 h-8 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xl text-foreground mb-2">Still curious?</h4>
+                    <p className="text-muted-foreground text-sm mb-6">Our concierge is available 24/7 for tailored inquiries.</p>
+                    <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary font-bold text-xs uppercase tracking-widest hover:underline flex items-center gap-2">
+                       Message on WhatsApp <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                { 
+                  q: "How long does the importation process take?", 
+                  a: "From the moment of a successful auction bid in the US, Europe, or Canada, the typical delivery time to your doorstep in Nigeria is 6 to 8 weeks. This includes inspection, shipping, and customs clearance." 
+                },
+                { 
+                  q: "Are the spare parts 100% genuine OEM?", 
+                  a: "Absolutely. We do not deal in clones or sub-standard components. Every part in our inventory is sourced directly from original equipment manufacturers (OEM) and verified by our engineering team." 
+                },
+                { 
+                  q: "Do you handle customs documentation and clearing?", 
+                  a: "Yes. Our importation service is 'White-Glove' — meaning we manage all the legal paperwork, duties, and customs processes. You simply receive your car in immaculate condition." 
+                },
+                { 
+                  q: "Can I inspect a vehicle before paying in full?", 
+                  a: "For all in-stock vehicles, we encourage physical inspections at our Lagos showroom. For imported vehicles, we provide a full independent diagnostic report before shipping begins." 
+                },
+                { 
+                  q: "What is the 'Active Fleet Logistics' widget?", 
+                  a: "It represents our real-time commitment to transparency. Our clients can track the general status of their vehicles in our global transit network from shipping to final clearing." 
+                },
+              ].map((faq, i) => (
+                <motion.div 
+                  key={i} 
+                  initial={{ opacity: 0, y: 10 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group"
+                >
+                  <details className="bg-background border border-border/80 rounded-2xl overflow-hidden shadow-sm hover:border-primary/30 transition-colors">
+                    <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
+                      <span className="font-bold text-foreground pr-4">{faq.q}</span>
+                      <ChevronRight className="w-5 h-5 text-muted-foreground group-open:rotate-90 transition-transform duration-300" />
+                    </summary>
+                    <div className="px-6 pb-6 text-muted-foreground leading-relaxed text-sm border-t border-border/10 pt-4">
+                      {faq.a}
+                    </div>
+                  </details>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INNER CIRCLE LEAD CAPTURE */}
+      <section className="py-20 md:py-32 bg-background border-t border-border/40 relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1400px] h-full">
+          <div className="absolute top-[-20%] left-[-10%] w-[40%] aspect-square bg-primary/5 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-20%] right-[-10%] w-[40%] aspect-square bg-primary/5 blur-[120px] rounded-full" />
+        </div>
+        
+        <div className="container relative z-10">
+          <div className="max-w-4xl mx-auto backdrop-blur-sm bg-card/30 border border-border/60 rounded-[2rem] md:rounded-[4rem] p-8 md:p-20 text-center overflow-hidden group">
+             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                <p className="spec-label text-primary mb-6">Exclusive Access</p>
+                <h2 className="font-display text-4xl md:text-6xl font-medium tracking-tight text-foreground mb-8">
+                  Join the <span className="italic font-light">Inner Circle.</span>
+                </h2>
+                <p className="text-muted-foreground text-lg md:text-xl font-medium max-w-2xl mx-auto mb-12">
+                  Be the first to receive notifications on rare inventory, exotic arrivals, and exclusive market insights before they reach the showroom.
+                </p>
+                
+                <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email address" 
+                    className="flex-grow bg-muted/50 border border-border/60 rounded-full px-8 py-5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all outline-none"
+                    required
+                  />
+                  <button className="bg-foreground text-background hover:bg-foreground/90 px-10 py-5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl">
+                    Subscribe
+                  </button>
+                </form>
+                <p className="mt-8 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/50 font-bold">
+                  Absolute Privacy. No Spam. Only Excellence.
+                </p>
+             </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* FINAL CTA */}
       <section className="relative py-20 sm:py-32 md:py-48 overflow-hidden">
         <div className="absolute inset-0 bg-secondary" />
@@ -406,29 +592,19 @@ export default function HomeClient({ vehicles }: { vehicles: any[] }) {
             <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="relative z-10">
               <h2 className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-medium tracking-tighter text-white mb-6 sm:mb-8 leading-[0.9]">
-                Ready to Upgrade<br/><span className="italic font-light opacity-60">Your Drive?</span>
+                Ready to Upgrade<br/><span className="italic font-light opacity-80">Your Drive?</span>
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-white/70 leading-relaxed mb-8 sm:mb-12 max-w-3xl mx-auto font-medium">
+              <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed mb-8 sm:mb-12 max-w-3xl mx-auto font-medium opacity-100">
                 Link up with our world-class concierge today. We're on standby to pair you with your perfect vehicle.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/cars"
                   className="group/btn relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black rounded-full font-bold text-[11px] uppercase tracking-widest overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)] transition-all duration-300 w-full sm:w-auto"
                 >
                   <div className="absolute inset-0 bg-black/5 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out" />
-                  <MessageCircle className="w-6 h-6 relative z-10 group-hover/btn:animate-pulse" />
-                  <span className="relative z-10">Concierge Desk</span>
-                </a>
-                <Link
-                  href="/cars"
-                  className="inline-flex items-center justify-center gap-2 px-10 py-5 border-2 border-white/20 text-white hover:bg-white/10 rounded-full font-bold text-[11px] uppercase tracking-widest backdrop-blur-sm transition-colors duration-300 w-full sm:w-auto"
-                >
-                  Explore Inventory
+                  <span className="relative z-10">Explore Inventory</span>
+                  <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
-              </div>
             </div>
           </motion.div>
         </div>

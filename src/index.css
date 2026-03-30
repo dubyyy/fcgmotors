@@ -17,13 +17,13 @@
     --secondary: 0 0% 10%; /* Dark Gray */
     --secondary-foreground: 0 0% 100%;
     --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted-foreground: 0 0% 25%;
     --accent: 0 0% 0%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
+    --border: 0 0% 80%;
+    --input: 0 0% 80%;
     --ring: 0 0% 0%;
     --radius: 1.25rem;
 
@@ -45,13 +45,13 @@
     --secondary: 0 0% 15%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 65%;
+    --muted-foreground: 0 0% 85%;
     --accent: 0 0% 100%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
     --ring: 0 0% 100%;
   }
 }
@@ -91,7 +91,7 @@
   }
 
   .spec-label {
-    @apply text-[9px] uppercase tracking-[0.2em] font-medium text-muted-foreground/80;
+    @apply text-[10px] uppercase tracking-[0.25em] font-semibold text-foreground/70;
     font-family: 'Montserrat', sans-serif;
   }
 

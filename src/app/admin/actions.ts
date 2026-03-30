@@ -24,6 +24,7 @@ export async function addCar(formData: FormData) {
     const brand = formData.get('brand') as string;
     const model = formData.get('model') as string;
     const year = parseInt(formData.get('year') as string);
+    const category = formData.get('category') as string;
     const price = formData.get('price') as string;
     const description = formData.get('description') as string;
     const imageUrls = formData.getAll('imageUrls') as string[];
@@ -33,7 +34,7 @@ export async function addCar(formData: FormData) {
     }
 
     await (prisma.car.create as any)({
-      data: { brand, model, year, price, imageUrls, description }
+      data: { brand, model, year, category, price, imageUrls, description }
     });
 
     revalidatePath('/admin');
@@ -155,6 +156,7 @@ export async function updateCar(id: number, formData: FormData) {
     const brand = formData.get('brand') as string;
     const model = formData.get('model') as string;
     const year = parseInt(formData.get('year') as string);
+    const category = formData.get('category') as string;
     const price = formData.get('price') as string;
     const description = formData.get('description') as string;
     const imageUrls = formData.getAll('imageUrls') as string[];
@@ -163,6 +165,7 @@ export async function updateCar(id: number, formData: FormData) {
       brand,
       model,
       year,
+      category,
       price,
       description
     };

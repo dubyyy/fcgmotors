@@ -55,8 +55,8 @@ export default function Navbar() {
   const isHeroTransparent = (pathname === "/" || pathname?.startsWith("/cars/")) && !scrolled;
   const navTextColor = isHeroTransparent ? "text-white" : "text-foreground";
   const navHoverColor = isHeroTransparent ? "hover:text-white" : "hover:text-foreground";
-  const navMutedColor = isHeroTransparent ? "text-white/70" : "text-muted-foreground";
-  const navBorderColor = isHeroTransparent ? "border-white/20" : "border-foreground/20";
+  const navMutedColor = isHeroTransparent ? "text-white/90" : "text-muted-foreground";
+  const navBorderColor = isHeroTransparent ? "border-white/30" : "border-foreground/30";
   const navLineColor = isHeroTransparent ? "bg-white" : "bg-foreground";
 
   return (
@@ -78,9 +78,9 @@ export default function Navbar() {
             <div className="flex items-center">
               <span className="font-bold tracking-[0.3em] text-xl sm:text-2xl">FGC</span>
               <div className="w-1.5 h-1.5 rounded-full bg-primary mx-1.5" />
-              <span className="italic font-light tracking-[0.15em] text-xl sm:text-2xl opacity-90">AUTOS</span>
+              <span className="italic font-light tracking-[0.15em] text-xl sm:text-2xl opacity-100">AUTOS</span>
             </div>
-            <span className="text-[8px] uppercase tracking-[0.5em] mt-1 opacity-50 font-sans font-bold">Nigeria's Finest</span>
+            <span className="text-[8px] uppercase tracking-[0.5em] mt-1 opacity-80 font-sans font-bold">Nigeria's Finest</span>
           </div>
         </Link>
 
@@ -112,21 +112,6 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* Desktop CTA */}
-        <div className="hidden lg:flex items-center gap-4">
-          <motion.a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`group relative overflow-hidden inline-flex items-center gap-3 px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold border bg-transparent transition-all duration-500 ${navBorderColor} ${navTextColor} ${navHoverColor}`}
-          >
-            <motion.div
-              className={`absolute inset-0 scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-0 ${navLineColor}`}
-            />
-            <MessageCircle className={`w-4 h-4 relative z-10 transition-colors duration-500 ${isHeroTransparent ? "group-hover:text-black" : "group-hover:text-background"}`} />
-            <span className={`relative z-10 transition-colors duration-500 ${isHeroTransparent ? "group-hover:text-black" : "group-hover:text-background"}`}>Concierge Desk</span>
-          </motion.a>
-        </div>
 
         {/* Mobile toggle — pill backdrop ensures icon is always readable regardless of page bg */}
         <button
@@ -201,7 +186,7 @@ export default function Navbar() {
               }}
             >
               {/* Menu header */}
-              <p className="text-[9px] uppercase tracking-[0.25em] font-medium mb-5" style={{ color: "rgba(255,255,255,0.4)" }}>
+              <p className="text-[10px] uppercase tracking-[0.3em] font-bold mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
                 Navigation
               </p>
               <nav>
@@ -271,35 +256,18 @@ export default function Navbar() {
                 className="flex flex-col gap-4 mt-6 pt-6"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
               >
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-center gap-3 transition-all duration-300 rounded-xl h-12 text-[11px] uppercase tracking-[0.18em] font-semibold"
-                  style={{
-                    background: "rgba(255,255,255,0.1)",
-                    color: "rgba(255,255,255,0.9)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
-                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  Concierge Desk
-                </a>
                 <div className="flex flex-col gap-2">
-                  <p className="text-[11px] flex items-center gap-2.5" style={{ color: "rgba(255,255,255,0.4)" }}>
+                  <p className="text-[11px] flex items-center gap-2.5 font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>
                     <span
                       className="w-5 h-5 rounded-full flex items-center justify-center font-bold text-[9px] shrink-0"
-                      style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)" }}
+                      style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)" }}
                     >L</span>
                     Lagos showroom open Mon–Sat
                   </p>
-                  <p className="text-[11px] flex items-center gap-2.5" style={{ color: "rgba(255,255,255,0.4)" }}>
+                  <p className="text-[11px] flex items-center gap-2.5 font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>
                     <span
                       className="w-5 h-5 rounded-full flex items-center justify-center font-bold text-[9px] shrink-0"
-                      style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)" }}
+                      style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.9)" }}
                     >T</span>
                     Nationwide delivery across Nigeria
                   </p>

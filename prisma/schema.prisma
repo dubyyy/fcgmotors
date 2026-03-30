@@ -12,6 +12,7 @@ model Car {
   model       String
   year        Int
   price       String
+  category    String   @default("Luxury")
   imageUrls   String[] @default([])
   description String
   createdAt   DateTime @default(now())

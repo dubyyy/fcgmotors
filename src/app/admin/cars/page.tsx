@@ -238,6 +238,10 @@ export default function CarsInventoryPage() {
                       <Input name="year" defaultValue={editingCar?.year} type="number" placeholder="2024" required className="bg-slate-50 border-none h-12 md:h-14 rounded-xl focus:ring-primary/20" />
                     </div>
                     <div className="space-y-2">
+                      <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Category / Type</Label>
+                      <Input name="category" defaultValue={editingCar?.category || "Luxury"} placeholder="e.g. SUV, Sedan, Coupe" required className="bg-slate-50 border-none h-12 md:h-14 rounded-xl focus:ring-primary/20" />
+                    </div>
+                    <div className="space-y-2">
                       <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Retail Price (₦)</Label>
                       <Input name="price" defaultValue={editingCar?.price} placeholder="₦185,000,000" required className="bg-slate-50 border-none h-12 md:h-14 rounded-xl focus:ring-primary/20" />
                     </div>
@@ -345,8 +349,8 @@ export default function CarsInventoryPage() {
               <tr className="bg-slate-50/50 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">
                 <th className="px-8 py-5">Vehicle Listing</th>
                 <th className="px-8 py-5">Year</th>
+                <th className="px-8 py-5">Category</th>
                 <th className="px-8 py-5">Retail Price</th>
-                <th className="px-8 py-5">Status</th>
                 <th className="px-8 py-5 text-right">Control</th>
               </tr>
             </thead>
@@ -380,14 +384,11 @@ export default function CarsInventoryPage() {
                   <td className="px-8 py-6">
                     <span className="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1 rounded-lg">{car.year}</span>
                   </td>
-                  <td className="px-8 py-6">
-                    <p className="text-base font-black text-slate-900">{car.price}</p>
+                  <td className="px-8 py-6 text-sm font-bold text-slate-500 italic">
+                    {car.category || "Luxury"}
                   </td>
                   <td className="px-8 py-6">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider border border-emerald-100/50">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      Live
-                    </div>
+                    <p className="text-base font-black text-slate-900">{car.price}</p>
                   </td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -449,7 +450,7 @@ export default function CarsInventoryPage() {
                         <Calendar className="w-3 h-3" /> {car.year}
                       </span>
                       <span className="text-[10px] font-bold text-slate-400 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100 flex items-center gap-1.5">
-                        <Tag className="w-3 h-3" /> #{car.id.toString().slice(-4)}
+                        <Tag className="w-3 h-3" /> {car.category || "Luxury"}
                       </span>
                     </div>
                   </div>
