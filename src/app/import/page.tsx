@@ -11,7 +11,7 @@ const steps = [
   { step: "05", title: "Delivery", desc: "Door-to-door delivery to any location in Nigeria." },
 ];
 
-const WHATSAPP_URL = "https://wa.me/2348000000000?text=I%27m%20interested%20in%20your%20vehicle%20importation%20service.";
+const WHATSAPP_URL = "https://wa.me/2348030523555?text=I%27m%20interested%20in%20your%20vehicle%20importation%20service.";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const fadeUp = {

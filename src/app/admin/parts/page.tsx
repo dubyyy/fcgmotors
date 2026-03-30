@@ -48,7 +48,9 @@ export default function PartsInventoryPage() {
   const [dataLoading, setDataLoading] = useState(true);
   const [parts, setParts] = useState<any[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [partImage, setPartImage] = useState<File | null>(null);
+  const [images, setImages] = useState<(string | null)[]>(Array(6).fill(null));
+  const [previews, setPreviews] = useState<string[]>(Array(6).fill(""));
+  const [uploading, setUploading] = useState<boolean[]>(Array(6).fill(false));
   const [editingPart, setEditingPart] = useState<any>(null);
 
   useEffect(() => {
@@ -62,11 +64,69 @@ export default function PartsInventoryPage() {
     setDataLoading(false);
   }
 
+  const handleFileChange = async (index: number, file: File | null) => {
+    if (!file) return;
+
+    setUploading((prev) => {
+      const copy = [...prev];
+      copy[index] = true;
+      return copy;
+    });
+
+    const newPreviews = [...previews];
+    newPreviews[index] = URL.createObjectURL(file);
+    setPreviews(newPreviews);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "acres-ng"
+      );
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD || "dcfrykcd6"}/image/upload`,
+        { method: "POST", body: formData }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || "Upload failed");
+
+      const newImages = [...images];
+      newImages[index] = data.secure_url;
+      setImages(newImages);
+      toast.success(`Asset ${index + 1} synced`);
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      toast.error(`Sync failed for slot ${index + 1}`);
+      const revertedPreviews = [...previews];
+      revertedPreviews[index] = "";
+      setPreviews(revertedPreviews);
+    } finally {
+      setUploading((prev) => {
+        const copy = [...prev];
+        copy[index] = false;
+        return copy;
+      });
+    }
+  };
+
   async function handlePartSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    if (partImage) formData.set('image', partImage);
+    const uploadedImages = images.filter((img): img is string => img !== null);
+    
+    if (uploadedImages.length === 0) {
+      toast.error("At least one component image is required");
+      setLoading(false);
+      return;
+    }
+
+    uploadedImages.forEach(url => {
+      formData.append('imageUrls', url);
+    });
 
     let result;
     if (editingPart) {
@@ -80,7 +140,8 @@ export default function PartsInventoryPage() {
     if (result.success) {
       toast.success(editingPart ? "Component updated!" : "Component listed in inventory!");
       (e.target as HTMLFormElement).reset();
-      setPartImage(null);
+      setImages(Array(6).fill(null));
+      setPreviews(Array(6).fill(""));
       setEditingPart(null);
       loadParts();
       setShowAddForm(false);
@@ -92,13 +153,29 @@ export default function PartsInventoryPage() {
   function handleEdit(part: any) {
     setEditingPart(part);
     setShowAddForm(true);
+    
+    const currentImages = Array(6).fill(null);
+    const currentPreviews = Array(6).fill("");
+    
+    const imageUrls = part.imageUrls || (part.imageUrl ? [part.imageUrl] : []);
+    imageUrls.forEach((url: string, i: number) => {
+      if (i < 6) {
+        currentImages[i] = url;
+        currentPreviews[i] = url;
+      }
+    });
+    
+    setImages(currentImages);
+    setPreviews(currentPreviews);
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function handleCancel() {
     setShowAddForm(false);
     setEditingPart(null);
-    setPartImage(null);
+    setImages(Array(6).fill(null));
+    setPreviews(Array(6).fill(""));
   }
 
   async function handleDelete(id: number) {
@@ -120,7 +197,7 @@ export default function PartsInventoryPage() {
     <div className="space-y-6 md:space-y-8 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="w-12 h-12 md:w-14 md:h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0">
+          <div className="w-12 h-12 md:w-14 md:h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0">
             <Layers className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           <div className="min-w-0">
@@ -132,7 +209,7 @@ export default function PartsInventoryPage() {
           onClick={showAddForm ? handleCancel : () => setShowAddForm(true)}
           className={cn(
             "h-12 md:h-14 px-6 md:px-8 rounded-2xl font-bold uppercase tracking-widest gap-2 transition-all duration-300 w-full sm:w-auto",
-            showAddForm ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-xl shadow-emerald-600/20"
+            showAddForm ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-black text-white hover:bg-black/90 shadow-xl shadow-black/20"
           )}
         >
           {showAddForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
@@ -190,44 +267,72 @@ export default function PartsInventoryPage() {
                     <Textarea name="description" defaultValue={editingPart?.description} placeholder="Technical specs, compatibility, and fitting guide..." required className="bg-slate-50 border-none min-h-[120px] md:min-h-[150px] rounded-xl focus:ring-emerald-500/20 resize-none" />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Component Visual Asset</Label>
-                    <div 
-                      className={`relative h-48 md:h-64 border-2 border-dashed rounded-[1.5rem] md:rounded-[2rem] flex flex-col items-center justify-center transition-all duration-300 group cursor-pointer ${partImage ? 'border-emerald-500 bg-emerald-50/50' : 'border-slate-200 hover:border-emerald-500/50'}`}
-                      onClick={() => document.getElementById('part-image-input')?.click()}
-                    >
-                      <input 
-                        id="part-image-input" 
-                        type="file" 
-                        className="hidden" 
-                        accept="image/*" 
-                        title="Part Image"
-                        onChange={(e) => setPartImage(e.target.files?.[0] || null)}
-                      />
-                      {partImage ? (
-                        <div className="text-center p-6">
-                          <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-emerald-600 mx-auto mb-3" />
-                          <p className="text-sm font-bold text-slate-900 line-clamp-1">{partImage.name}</p>
-                          <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-bold">Image Locked. Click to reset.</p>
-                        </div>
-                      ) : (
-                        <div className="text-center p-6">
-                          <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 mb-4 mx-auto group-hover:scale-110 group-hover:rotate-12 transition-transform shadow-sm">
-                            <Box className="w-6 h-6 md:w-8 md:h-8" />
-                          </div>
-                          <p className="text-sm font-bold text-slate-900">Upload Component Media</p>
-                          <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-bold">Clear technical photos highly recommended.</p>
-                        </div>
-                      )}
+                  <div>
+                    <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-4">Component Visual Assets (6 Slots)</Label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                      {images.map((_, i) => (
+                        <label
+                          key={i}
+                          className={cn(
+                            "relative flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-6 cursor-pointer hover:bg-slate-50 transition-all duration-300 min-h-[180px] group",
+                            previews[i] ? "border-emerald-500 bg-emerald-50/10" : "border-slate-200"
+                          )}
+                        >
+                          {uploading[i] ? (
+                            <div className="flex flex-col items-center gap-2">
+                              <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                              <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600 italic">Syncing Asset...</span>
+                            </div>
+                          ) : previews[i] ? (
+                            <div className="relative w-full h-full flex items-center justify-center">
+                              <img
+                                src={previews[i]}
+                                alt={`preview-${i}`}
+                                className="w-full h-40 object-cover rounded-xl shadow-lg group-hover:scale-[1.02] transition-transform duration-500"
+                              />
+                              <button
+                                type="button"
+                                className="absolute -top-3 -right-3 bg-red-500 p-2 rounded-full shadow-xl hover:bg-red-600 transition-colors text-white"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  const newImages = [...images];
+                                  const newPreviews = [...previews];
+                                  newImages[i] = null;
+                                  newPreviews[i] = "";
+                                  setImages(newImages);
+                                  setPreviews(newPreviews);
+                                }}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="text-center group-hover:scale-110 transition-transform duration-500">
+                              <ImageIcon className="w-8 h-8 mb-3 text-slate-300 group-hover:text-emerald-500 transition-colors" />
+                              <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block"> Slot {i + 1}</span>
+                              <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest mt-1 block">Click to Upload</span>
+                            </div>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) =>
+                              handleFileChange(i, e.target.files?.[0] || null)
+                            }
+                          />
+                        </label>
+                      ))}
                     </div>
                   </div>
 
                   <Button 
-                    disabled={loading} 
-                    className="w-full h-14 md:h-16 bg-emerald-600 text-white hover:bg-emerald-700 rounded-2xl font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-300 shadow-xl shadow-emerald-600/20"
+                    disabled={loading || uploading.some(u => u)} 
+                    className="w-full h-14 md:h-16 bg-black text-white hover:bg-black/90 rounded-2xl font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-300 shadow-xl shadow-black/20"
                   >
                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingPart ? <Save className="w-5 h-5" /> : <Plus className="w-5 h-5" />)}
-                    {editingPart ? "Confirm Economic Update" : "Catalog Technical Component"}
+                    {loading ? "Registering Asset..." : (editingPart ? "Confirm Economic Update" : "Catalog Technical Component")}
                   </Button>
                 </form>
               </CardContent>
@@ -280,7 +385,7 @@ export default function PartsInventoryPage() {
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-2xl bg-white overflow-hidden flex-shrink-0 border border-slate-100 shadow-sm">
-                        <img src={part.imageUrl} alt={part.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <img src={part.imageUrls?.[0] || part.imageUrl} alt={part.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                       </div>
                       <div>
                         <p className="text-base font-bold text-slate-900 leading-tight">{part.name}</p>
@@ -342,7 +447,7 @@ export default function PartsInventoryPage() {
               <div key={part.id} className="p-4 sm:p-6 space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white overflow-hidden flex-shrink-0 border border-slate-100 shadow-sm relative">
-                    <img src={part.imageUrl} alt={part.name} className="w-full h-full object-cover" />
+                    <img src={part.imageUrls?.[0] || part.imageUrl} alt={part.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">

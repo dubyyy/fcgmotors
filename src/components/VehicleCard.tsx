@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface VehicleCardProps {
+  id?: string | number;
   image: string | { src: string };
   brand: string;
   model: string;
@@ -13,68 +15,79 @@ interface VehicleCardProps {
   transmission?: string;
 }
 
-const WHATSAPP_BASE = "https://wa.me/2348000000000?text=";
+const WHATSAPP_BASE = "https://wa.me/2348030523555?text=";
 
-export default function VehicleCard({ image, brand, model, year, price, mileage = "45,000 km", fuel = "Petrol", transmission = "Automatic" }: VehicleCardProps) {
+export default function VehicleCard({ id, image, brand, model, year, price, mileage = "45,000 km", fuel = "Petrol", transmission = "Automatic" }: VehicleCardProps) {
   const whatsappText = encodeURIComponent(
     `I'm interested in the ${year} ${brand} ${model} (${price}). Is it available for inspection?`
   );
 
   return (
     <motion.div
-      className="group card-lift rounded-card overflow-hidden bg-card border border-border"
+      className="group bg-card border border-border/60 rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+      viewport={{ once: true }}
     >
-      {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+      {/* Image Container */}
+      <div className="relative aspect-[16/10] overflow-hidden">
         <img
           src={typeof image === 'string' ? image : (image?.src || '')}
           alt={`${year} ${brand} ${model}`}
-          className="w-full h-full object-cover img-editorial transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
-        <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] uppercase tracking-[0.15em] font-semibold px-3 py-1 rounded-sm">
-          Verified
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        <div className="absolute top-4 left-4">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase tracking-[0.2em] font-bold px-3 py-1.5 rounded-full shadow-xl">
+            Verified
+          </div>
+        </div>
+
+        <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+          <div className="flex gap-2">
+            <span className="bg-white/20 backdrop-blur-md text-white text-[9px] font-bold px-2 py-1 rounded-md border border-white/10">{fuel}</span>
+            <span className="bg-white/20 backdrop-blur-md text-white text-[9px] font-bold px-2 py-1 rounded-md border border-white/10">{transmission}</span>
+          </div>
         </div>
       </div>
 
-      {/* Spec strip */}
-      <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-5 py-2 sm:py-2.5 border-b border-border bg-muted/50 overflow-x-auto scroller-hide">
-        <span className="spec-label text-[9px] sm:text-[10px] whitespace-nowrap tabular-price">{year}</span>
-        <span className="w-px h-3 bg-border shrink-0" />
-        <span className="spec-label text-[9px] sm:text-[10px] whitespace-nowrap tabular-price">{mileage}</span>
-        <span className="w-px h-3 bg-border shrink-0" />
-        <span className="spec-label text-[9px] sm:text-[10px] whitespace-nowrap">{fuel}</span>
-        <span className="w-px h-3 bg-border shrink-0" />
-        <span className="spec-label text-[9px] sm:text-[10px] whitespace-nowrap">{transmission}</span>
-      </div>
-
-      {/* Details */}
-      <div className="p-4 sm:p-5 flex flex-row items-end justify-between gap-3 sm:gap-4">
-        <div className="min-w-0">
-          <h3 className="font-display font-bold text-lg text-foreground">
-            {brand} {model}
-          </h3>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{year} Model</p>
+      {/* Content */}
+      <div className="p-6 sm:p-8">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-1">{brand}</p>
+            <h3 className="font-display font-bold text-xl sm:text-2xl text-foreground leading-tight">
+              {model}
+            </h3>
+          </div>
+          <div className="text-right">
+            <p className="font-display font-bold text-lg sm:text-xl text-foreground tabular-price">
+              {price}
+            </p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-0.5">{year} Model</p>
+          </div>
         </div>
-        <p className="font-display font-bold text-lg text-primary tabular-price whitespace-nowrap shrink-0">
-          {price}
-        </p>
-      </div>
 
-      {/* CTA */}
-      <div className="px-4 sm:px-5 pb-5">
-        <a
-          href={`${WHATSAPP_BASE}${whatsappText}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="gold-action w-full inline-flex items-center justify-center gap-2 py-3 rounded-btn text-xs sm:text-sm font-semibold tracking-wider"
+        <div className="flex items-center gap-4 py-4 border-y border-border/50 mb-6">
+          <div className="flex flex-col">
+            <span className="text-[9px] uppercase tracking-widest text-muted-foreground mb-0.5">Mileage</span>
+            <span className="text-xs font-bold text-foreground tabular-price">{mileage}</span>
+          </div>
+          <div className="w-px h-6 bg-border/50" />
+          <div className="flex flex-col">
+            <span className="text-[9px] uppercase tracking-widest text-muted-foreground mb-0.5">Condition</span>
+            <span className="text-xs font-bold text-foreground">Pristine</span>
+          </div>
+        </div>
+
+        <Link
+          href={`/cars/${id || `${brand.toLowerCase()}-${model.toLowerCase()}`.replace(/\s+/g, '-')}`}
+          className="group/btn relative w-full inline-flex items-center justify-center gap-2 py-4 bg-secondary text-secondary-foreground rounded-xl text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:bg-primary hover:text-white overflow-hidden shadow-lg shadow-black/5"
         >
-          Book Inspection
-        </a>
+          <span className="relative z-10">View Details</span>
+          <motion.span className="relative z-10 transition-transform group-hover/btn:translate-x-1">→</motion.span>
+        </Link>
       </div>
     </motion.div>
   );

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
-const WHATSAPP_URL = "https://wa.me/2348000000000?text=Hello%20FGC%20Autos%2C%20I%27d%20like%20to%20make%20an%20inquiry.";
+const WHATSAPP_URL = "https://wa.me/2348030523555?text=Hello%20FGC%20Autos%2C%20I%27d%20like%20to%20make%20an%20inquiry.";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const fadeUp = {
@@ -20,7 +20,7 @@ export default function Contact() {
     const text = encodeURIComponent(
       `Name: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nMessage: ${form.message}`
     );
-    window.open(`https://wa.me/2348000000000?text=${text}`, "_blank");
+    window.open(`https://wa.me/2348030523555?text=${text}`, "_blank");
   };
 
   return (
@@ -79,12 +79,12 @@ export default function Contact() {
               <div>
                 <h3 className="font-display font-semibold text-lg text-foreground mb-4">Contact Details</h3>
                 <ul className="space-y-4 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-3"><Phone className="w-5 h-5 text-primary" /> +234 800 000 0000</li>
+                  <li className="flex items-center gap-3"><Phone className="w-5 h-5 text-primary" /> +234 803 052 3555</li>
                   <li className="flex items-center gap-3">
                     <MessageCircle className="w-5 h-5 text-primary" />
                     <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WhatsApp</a>
                   </li>
-                  <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-primary" /> info@fgcautos.com</li>
+                  <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-primary" /> ceo@fgcautosltd.com</li>
                   <li className="flex items-start gap-3"><MapPin className="w-5 h-5 text-primary mt-0.5" /> Lagos, Nigeria</li>
                 </ul>
               </div>

@@ -117,13 +117,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="pt-8 border-t border-slate-50 mt-auto">
                 <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 mb-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
                        <Zap className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-[10px] font-black uppercase text-slate-900 tracking-widest">Global Status</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-slate-900" />
                     <span className="text-[11px] font-bold text-slate-500">Node Sync: 100%</span>
                   </div>
                 </div>
@@ -180,7 +180,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-bold text-slate-400 uppercase">Latency</span>
-                  <span className="text-[10px] font-black text-emerald-500">12ms</span>
+                  <span className="text-[10px] font-black text-slate-900">12ms</span>
                 </div>
                 <div className="h-1 w-full bg-slate-200 rounded-full overflow-hidden">
                   <div className="w-[90%] h-full bg-slate-900 rounded-full" />

@@ -15,7 +15,7 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-const WHATSAPP_URL = "https://wa.me/2348000000000?text=Hello%20FGC%20Autos%2C%20I%27d%20like%20to%20make%20an%20inquiry.";
+const WHATSAPP_URL = "https://wa.me/2348030523555?text=Hello%20FGC%20Autos%2C%20I%27d%20like%20to%20make%20an%20inquiry.";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -52,7 +52,7 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const isHeroTransparent = pathname === "/" && !scrolled;
+  const isHeroTransparent = (pathname === "/" || pathname?.startsWith("/cars/")) && !scrolled;
   const navTextColor = isHeroTransparent ? "text-white" : "text-foreground";
   const navHoverColor = isHeroTransparent ? "hover:text-white" : "hover:text-foreground";
   const navMutedColor = isHeroTransparent ? "text-white/70" : "text-muted-foreground";
@@ -68,19 +68,20 @@ export default function Navbar() {
       style={{ transform: "translateZ(0)", willChange: "transform" }}
     >
       <nav className="container flex items-center justify-between h-16 md:h-20 gap-2">
-        {/* Logo — shrink-0 prevents it from squeezing the hamburger off screen */}
+        {/* Logo */}
         <Link
           href="/"
           className={`relative group font-display flex items-center justify-center z-50 shrink-0 ${navTextColor}`}
           onClick={() => setOpen(false)}
         >
-          <span className="font-light tracking-[0.2em] text-xl sm:text-2xl md:text-3xl">FGC</span>
-          <span className={`italic font-semibold tracking-[0.1em] transition-colors ml-1.5 text-xl sm:text-2xl md:text-3xl`}>AUTOS</span>
-          <motion.div
-            className={`absolute -bottom-2 left-0 w-0 h-[1.5px] ${navLineColor}`}
-            whileHover={{ width: "100%" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          />
+          <div className="flex flex-col leading-none">
+            <div className="flex items-center">
+              <span className="font-bold tracking-[0.3em] text-xl sm:text-2xl">FGC</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mx-1.5" />
+              <span className="italic font-light tracking-[0.15em] text-xl sm:text-2xl opacity-90">AUTOS</span>
+            </div>
+            <span className="text-[8px] uppercase tracking-[0.5em] mt-1 opacity-50 font-sans font-bold">Nigeria's Finest</span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}

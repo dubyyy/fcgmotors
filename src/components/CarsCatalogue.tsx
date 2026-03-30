@@ -10,7 +10,7 @@ interface Car {
   model: string;
   year: number;
   price: string;
-  imageUrl: string;
+  imageUrls: string[];
   description: string;
 }
 
@@ -59,7 +59,8 @@ export default function CarsCatalogue({ initialCars }: CarsCatalogueProps) {
         {filtered.map((v) => (
           <VehicleCard 
             key={v.id} 
-            image={v.imageUrl}
+            id={v.id}
+            image={v.imageUrls?.[0]}
             brand={v.brand}
             model={v.model}
             year={v.year.toString()}

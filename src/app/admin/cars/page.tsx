@@ -34,7 +34,9 @@ export default function CarsInventoryPage() {
   const [dataLoading, setDataLoading] = useState(true);
   const [cars, setCars] = useState<any[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [carImage, setCarImage] = useState<File | null>(null);
+  const [images, setImages] = useState<(string | null)[]>(Array(6).fill(null));
+  const [previews, setPreviews] = useState<string[]>(Array(6).fill(""));
+  const [uploading, setUploading] = useState<boolean[]>(Array(6).fill(false));
   const [editingCar, setEditingCar] = useState<any>(null);
 
   useEffect(() => {
@@ -48,11 +50,77 @@ export default function CarsInventoryPage() {
     setDataLoading(false);
   }
 
+  // Direct Cloudinary Upload Handler
+  const handleFileChange = async (index: number, file: File | null) => {
+    if (!file) return;
+
+    setUploading((prev) => {
+      const copy = [...prev];
+      copy[index] = true;
+      return copy;
+    });
+
+    const newPreviews = [...previews];
+    newPreviews[index] = URL.createObjectURL(file);
+    setPreviews(newPreviews);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || "acres-ng"
+      );
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD || "dcfrykcd6"}/image/upload`,
+        { method: "POST", body: formData }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || "Upload failed");
+
+      const newImages = [...images];
+      newImages[index] = data.secure_url;
+      setImages(newImages);
+      toast.success(`Image ${index + 1} uploaded successfully`);
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      toast.error(`Failed to upload image at slot ${index + 1}`);
+      // Revert preview on failure
+      const revertedPreviews = [...previews];
+      revertedPreviews[index] = "";
+      setPreviews(revertedPreviews);
+    } finally {
+      setUploading((prev) => {
+        const copy = [...prev];
+        copy[index] = false;
+        return copy;
+      });
+    }
+  };
+
   async function handleCarSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    
     const formData = new FormData(e.currentTarget);
-    if (carImage) formData.set('image', carImage);
+    const uploadedImages = images.filter((img): img is string => img !== null);
+    
+    if (uploadedImages.length === 0) {
+      toast.error("Please upload at least one image");
+      setLoading(false);
+      return;
+    }
+
+    // Since we're doing client-side uploads, we just need to pass the URLs
+    // We'll append them as JSON or separate fields. 
+    // Wait, the action `addCar` expects `formData.getAll('images')` which are Files?
+    // No, I'll update the action to handle URLs directly or just append them to the formData as strings.
+    
+    uploadedImages.forEach(url => {
+      formData.append('imageUrls', url);
+    });
     
     let result;
     if (editingCar) {
@@ -66,7 +134,8 @@ export default function CarsInventoryPage() {
     if (result.success) {
       toast.success(editingCar ? "Vehicle details updated!" : "Vehicle added to showroom successfully!");
       (e.target as HTMLFormElement).reset();
-      setCarImage(null);
+      setImages(Array(6).fill(null));
+      setPreviews(Array(6).fill(""));
       setEditingCar(null);
       loadCars();
       setShowAddForm(false);
@@ -78,14 +147,30 @@ export default function CarsInventoryPage() {
   function handleEdit(car: any) {
     setEditingCar(car);
     setShowAddForm(true);
-    // Scroll to top to see the form
+    
+    // Populate slots with existing images
+    const currentImages = Array(6).fill(null);
+    const currentPreviews = Array(6).fill("");
+    
+    const imageUrls = car.imageUrls || (car.imageUrl ? [car.imageUrl] : []);
+    imageUrls.forEach((url: string, i: number) => {
+      if (i < 6) {
+        currentImages[i] = url;
+        currentPreviews[i] = url;
+      }
+    });
+    
+    setImages(currentImages);
+    setPreviews(currentPreviews);
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function handleCancel() {
     setShowAddForm(false);
     setEditingCar(null);
-    setCarImage(null);
+    setImages(Array(6).fill(null));
+    setPreviews(Array(6).fill(""));
   }
 
   async function handleDelete(id: number) {
@@ -163,44 +248,72 @@ export default function CarsInventoryPage() {
                     <Textarea name="description" defaultValue={editingCar?.description} placeholder="Full specification list and vehicle status..." required className="bg-slate-50 border-none min-h-[120px] md:min-h-[150px] rounded-xl focus:ring-primary/20 resize-none" />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">High-Res Media</Label>
-                    <div 
-                      className={`relative h-48 md:h-64 border-2 border-dashed rounded-[1.5rem] md:rounded-[2rem] flex flex-col items-center justify-center transition-all duration-300 group cursor-pointer ${carImage ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-primary/50'}`}
-                      onClick={() => document.getElementById('car-image-input')?.click()}
-                    >
-                      <input 
-                        id="car-image-input" 
-                        type="file" 
-                        className="hidden" 
-                        accept="image/*" 
-                        title="Vehicle Image"
-                        onChange={(e) => setCarImage(e.target.files?.[0] || null)}
-                      />
-                      {carImage ? (
-                        <div className="text-center p-6">
-                          <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-primary mx-auto mb-3" />
-                          <p className="text-sm font-bold text-slate-900 line-clamp-1">{carImage.name}</p>
-                          <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-bold">Replacement Required? Click again.</p>
-                        </div>
-                      ) : (
-                        <div className="text-center p-6">
-                          <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 mb-4 mx-auto group-hover:scale-110 transition-transform">
-                            <ImageIcon className="w-6 h-6 md:w-8 md:h-8" />
-                          </div>
-                          <p className="text-sm font-bold text-slate-900">Upload Studio Quality Imagery</p>
-                          <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-bold italic">Landscape orientation (16:9) preferred.</p>
-                        </div>
-                      )}
+                  <div>
+                    <Label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-4">High-Res Media (6 Asset Slots)</Label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                      {images.map((_, i) => (
+                        <label
+                          key={i}
+                          className={cn(
+                            "relative flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-6 cursor-pointer hover:bg-slate-50 transition-all duration-300 min-h-[180px] group",
+                            previews[i] ? "border-primary bg-primary/5" : "border-slate-200"
+                          )}
+                        >
+                          {uploading[i] ? (
+                            <div className="flex flex-col items-center gap-2">
+                              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                              <span className="text-[9px] font-bold uppercase tracking-widest text-primary italic">Syncing Asset...</span>
+                            </div>
+                          ) : previews[i] ? (
+                            <div className="relative w-full h-full flex items-center justify-center">
+                              <img
+                                src={previews[i]}
+                                alt={`preview-${i}`}
+                                className="w-full h-40 object-cover rounded-xl shadow-lg group-hover:scale-[1.02] transition-transform duration-500"
+                              />
+                              <button
+                                type="button"
+                                className="absolute -top-3 -right-3 bg-red-500 p-2 rounded-full shadow-xl hover:bg-red-600 transition-colors text-white"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  const newImages = [...images];
+                                  const newPreviews = [...previews];
+                                  newImages[i] = null;
+                                  newPreviews[i] = "";
+                                  setImages(newImages);
+                                  setPreviews(newPreviews);
+                                }}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="text-center group-hover:scale-110 transition-transform duration-500">
+                              <ImageIcon className="w-8 h-8 mb-3 text-slate-300 group-hover:text-primary transition-colors" />
+                              <span className="text-slate-400 text-[10px] font-black uppercase tracking-wider block"> Slot {i + 1}</span>
+                              <span className="text-slate-300 text-[8px] font-bold uppercase tracking-widest mt-1 block">Click to Upload</span>
+                            </div>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) =>
+                              handleFileChange(i, e.target.files?.[0] || null)
+                            }
+                          />
+                        </label>
+                      ))}
                     </div>
                   </div>
 
-                   <Button 
-                    disabled={loading} 
+                  <Button 
+                    disabled={loading || uploading.some(u => u)} 
                     className="w-full h-14 md:h-16 bg-primary text-white hover:bg-primary/90 rounded-2xl font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-300 shadow-xl shadow-primary/20"
                   >
                     {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingCar ? <Save className="w-5 h-5" /> : <Plus className="w-5 h-5" />)}
-                    {editingCar ? "Confirm Modifications" : "Commit Vehicle to Showroom"}
+                    {loading ? "Processing Command..." : (editingCar ? "Confirm Modifications" : "Commit Vehicle to Showroom")}
                   </Button>
                 </form>
               </CardContent>
@@ -256,7 +369,7 @@ export default function CarsInventoryPage() {
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-100 shadow-sm">
-                        <img src={car.imageUrl} alt={car.brand} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <img src={car.imageUrls?.[0] || car.imageUrl} alt={car.brand} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                       </div>
                       <div>
                         <p className="text-base font-bold text-slate-900 leading-tight">{car.brand} {car.model}</p>
@@ -318,7 +431,7 @@ export default function CarsInventoryPage() {
               <div key={car.id} className="p-4 sm:p-6 space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-100 shadow-sm">
-                    <img src={car.imageUrl} alt={car.brand} className="w-full h-full object-cover" />
+                    <img src={car.imageUrls?.[0] || car.imageUrl} alt={car.brand} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">

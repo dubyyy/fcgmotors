@@ -72,7 +72,7 @@ export default function AdminDashboard() {
       label: "Total Vehicles", 
       value: stats.carsCount, 
       icon: Car, 
-      color: "bg-blue-600", 
+      color: "bg-slate-950", 
       trend: "+3%", 
       isUp: true,
       description: "Available inventory"
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-4">
                       <div className="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200 shadow-sm relative">
-                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <img src={item.imageUrls?.[0] || item.imageUrl} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-slate-900 leading-tight truncate">{item.name}</p>
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
                   <td className="px-8 py-5">
                     <span className={cn(
                       "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider",
-                      item.type === 'Car' ? "bg-blue-50 text-blue-600 border border-blue-100" : "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                      item.type === 'Car' ? "bg-slate-100 text-slate-900 border border-slate-200" : "bg-emerald-50 text-emerald-600 border border-emerald-100"
                     )}>
                       {item.type}
                     </span>
@@ -256,14 +256,14 @@ export default function AdminDashboard() {
               <div key={i} className="p-4 sm:p-6 space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-100 shadow-sm">
-                    <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                    <img src={item.imageUrls?.[0] || item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                        <p className="text-base font-bold text-slate-900 leading-tight truncate">{item.name}</p>
                        <span className={cn(
                         "px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest border",
-                        item.type === 'Car' ? "bg-blue-50 text-blue-600 border-blue-100" : "bg-emerald-50 text-emerald-600 border-emerald-100"
+                        item.type === 'Car' ? "bg-slate-100 text-slate-900 border-slate-200" : "bg-emerald-50 text-emerald-600 border-emerald-100"
                       )}>
                         {item.type}
                       </span>

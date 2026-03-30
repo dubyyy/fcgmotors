@@ -118,7 +118,7 @@ export default function CarPricesPage() {
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="w-14 h-14 rounded-xl bg-slate-100 overflow-hidden border border-slate-100 shadow-sm">
-                        <img src={car.imageUrl} alt={car.brand} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <img src={car.imageUrls?.[0] || car.imageUrl} alt={car.brand} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                       </div>
                       <div className="min-w-0">
                         <p className="text-base font-bold text-slate-900 leading-tight truncate">{car.brand} {car.model}</p>
@@ -174,7 +174,7 @@ export default function CarPricesPage() {
               <div key={car.id} className="p-4 space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-xl bg-slate-100 overflow-hidden border border-slate-100 shadow-sm flex-shrink-0">
-                    <img src={car.imageUrl} alt={car.brand} className="w-full h-full object-cover" />
+                    <img src={car.imageUrls?.[0] || car.imageUrl} alt={car.brand} className="w-full h-full object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-base font-bold text-slate-900 leading-tight">{car.brand}</p>

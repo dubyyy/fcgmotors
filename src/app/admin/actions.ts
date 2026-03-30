@@ -26,16 +26,14 @@ export async function addCar(formData: FormData) {
     const year = parseInt(formData.get('year') as string);
     const price = formData.get('price') as string;
     const description = formData.get('description') as string;
-    const imageFile = formData.get('image') as File;
+    const imageUrls = formData.getAll('imageUrls') as string[];
 
-    if (!imageFile || imageFile.size === 0) {
-      throw new Error('Image is required');
+    if (imageUrls.length === 0) {
+      throw new Error('At least one image is required');
     }
 
-    const imageUrl = await uploadToCloudinary(imageFile) as string;
-
-    await prisma.car.create({
-      data: { brand, model, year, price, imageUrl, description }
+    await (prisma.car.create as any)({
+      data: { brand, model, year, price, imageUrls, description }
     });
 
     revalidatePath('/admin');
@@ -54,16 +52,14 @@ export async function addSparePart(formData: FormData) {
     const category = formData.get('category') as string;
     const price = formData.get('price') as string;
     const description = formData.get('description') as string;
-    const imageFile = formData.get('image') as File;
+    const imageUrls = formData.getAll('imageUrls') as string[];
 
-    if (!imageFile || imageFile.size === 0) {
+    if (imageUrls.length === 0) {
       throw new Error('Image is required');
     }
 
-    const imageUrl = await uploadToCloudinary(imageFile) as string;
-
-    await prisma.sparePart.create({
-      data: { name, partNumber, category, price, imageUrl, description }
+    await (prisma.sparePart.create as any)({
+      data: { name, partNumber, category, price, imageUrls, description }
     });
 
     revalidatePath('/admin');
@@ -161,23 +157,23 @@ export async function updateCar(id: number, formData: FormData) {
     const year = parseInt(formData.get('year') as string);
     const price = formData.get('price') as string;
     const description = formData.get('description') as string;
-    const imageFile = formData.get('image') as File;
+    const imageUrls = formData.getAll('imageUrls') as string[];
 
-    let imageUrl;
-    if (imageFile && imageFile.size > 0) {
-      imageUrl = await uploadToCloudinary(imageFile) as string;
+    const updateData: any = {
+      brand,
+      model,
+      year,
+      price,
+      description
+    };
+
+    if (imageUrls.length > 0) {
+      updateData.imageUrls = imageUrls;
     }
 
-    await prisma.car.update({
+    await (prisma.car.update as any)({
       where: { id },
-      data: { 
-        brand, 
-        model, 
-        year, 
-        price, 
-        ...(imageUrl && { imageUrl }),
-        description 
-      }
+      data: updateData
     });
 
     revalidatePath('/admin');
@@ -196,23 +192,23 @@ export async function updateSparePart(id: number, formData: FormData) {
     const category = formData.get('category') as string;
     const price = formData.get('price') as string;
     const description = formData.get('description') as string;
-    const imageFile = formData.get('image') as File;
+    const imageUrls = formData.getAll('imageUrls') as string[];
 
-    let imageUrl;
-    if (imageFile && imageFile.size > 0) {
-      imageUrl = await uploadToCloudinary(imageFile) as string;
+    const updateData: any = { 
+      name, 
+      partNumber, 
+      category, 
+      price, 
+      description 
+    };
+
+    if (imageUrls.length > 0) {
+      updateData.imageUrls = imageUrls;
     }
 
-    await prisma.sparePart.update({
+    await (prisma.sparePart.update as any)({
       where: { id },
-      data: { 
-        name, 
-        partNumber, 
-        category, 
-        price, 
-        ...(imageUrl && { imageUrl }),
-        description 
-      }
+      data: updateData
     });
 
     revalidatePath('/admin');

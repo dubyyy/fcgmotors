@@ -118,7 +118,7 @@ export default function PartPricesPage() {
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="w-14 h-14 rounded-xl bg-slate-100 overflow-hidden border border-slate-100">
-                        <img src={part.imageUrl} alt={part.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <img src={part.imageUrls?.[0] || part.imageUrl} alt={part.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                       </div>
                       <div className="min-w-0">
                         <p className="text-base font-bold text-slate-900 leading-tight truncate">{part.name}</p>
@@ -176,7 +176,7 @@ export default function PartPricesPage() {
               <div key={part.id} className="p-4 space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-xl bg-slate-100 overflow-hidden border border-slate-100 flex-shrink-0">
-                    <img src={part.imageUrl} alt={part.name} className="w-full h-full object-cover" />
+                    <img src={part.imageUrls?.[0] || part.imageUrl} alt={part.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-base font-bold text-slate-900 leading-tight truncate">{part.name}</p>

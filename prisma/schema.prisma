@@ -12,7 +12,7 @@ model Car {
   model       String
   year        Int
   price       String
-  imageUrl    String
+  imageUrls   String[] @default([])
   description String
   createdAt   DateTime @default(now())
 }
@@ -23,7 +23,7 @@ model SparePart {
   partNumber  String?
   category    String
   price       String
-  imageUrl    String
+  imageUrls   String[] @default([])
   description String
   createdAt   DateTime @default(now())
 }

@@ -10,7 +10,8 @@ interface SparePart {
   partNumber?: string;
   category: string;
   price: string;
-  imageUrl: string;
+  imageUrls: string[];
+  imageUrl?: string;
   description: string;
 }
 
@@ -30,7 +31,7 @@ const categories = [
   { label: "Lights", icon: Lightbulb },
 ];
 
-const WHATSAPP_BASE = "https://wa.me/2348000000000?text=";
+const WHATSAPP_BASE = "https://wa.me/2348030523555?text=";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -82,7 +83,7 @@ export default function SparePartsCatalogue({ initialParts }: SparePartsCatalogu
             {/* Image Section */}
             <div className="relative aspect-[5/4] overflow-hidden bg-secondary">
                <img 
-                 src={part.imageUrl} 
+                 src={part.imageUrls?.[0] || part.imageUrl} 
                  alt={part.name} 
                  className="w-full h-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                  loading="lazy"

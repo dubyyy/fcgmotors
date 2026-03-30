@@ -15,13 +15,17 @@ export default function Footer() {
     <footer className="bg-secondary text-secondary-foreground">
       <div className="container section-padding">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div>
-            <h3 className="font-display text-2xl mb-4">
-              <span className="font-light tracking-[0.2em]">FGC</span>
-              <span className="italic font-semibold tracking-[0.1em] ml-2">Autos</span>
+          <div className="max-w-xs">
+            <h3 className="font-display mb-6">
+              <div className="flex items-center">
+                <span className="font-bold tracking-[0.3em] text-2xl text-white">FGC</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mx-2" />
+                <span className="italic font-light tracking-[0.15em] text-2xl text-white/90">AUTOS</span>
+              </div>
+              <div className="text-[10px] uppercase tracking-[0.5em] mt-2 opacity-40 font-sans font-bold text-white">Nigeria's Finest</div>
             </h3>
-            <p className="text-sm text-secondary-foreground/70 leading-relaxed">
-              Nigeria's trusted source for premium vehicles and genuine spare parts. Over a decade of excellence.
+            <p className="text-sm text-secondary-foreground/60 leading-relaxed font-medium">
+              Curating Nigeria's finest automotive collection and authentic components for the discerning driver. Over a decade of uncompromising excellence and trust.
             </p>
           </div>
 
@@ -46,9 +50,9 @@ export default function Footer() {
           <div>
             <h4 className="spec-label mb-4 text-secondary-foreground/50">Contact</h4>
             <ul className="space-y-3 text-sm text-secondary-foreground/70">
-              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary shrink-0" /><span>+234 800 000 0000</span></li>
+              <li className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary shrink-0" /><span>+234 803 052 3555</span></li>
               <li className="flex items-center gap-2"><MessageCircle className="w-4 h-4 text-primary shrink-0" /><span>WhatsApp</span></li>
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary shrink-0" /><span>info@fgcautos.com</span></li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary shrink-0" /><span>ceo@fgcautosltd.com</span></li>
               <li className="flex items-start gap-2"><MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" /><span>Lagos, Nigeria</span></li>
             </ul>
           </div>
