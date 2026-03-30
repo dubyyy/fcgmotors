@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { 
-  MapPin, 
-  Calendar, 
-  Gauge, 
-  Fuel, 
-  Shield, 
-  ArrowLeft, 
+import {
+  MapPin,
+  Calendar,
+  Gauge,
+  Fuel,
+  Shield,
+  ArrowLeft,
   X,
   CreditCard,
   Zap,
@@ -30,7 +30,7 @@ type Car = {
 };
 
 export default function CarDetailClient({ car }: { car: Car }) {
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({ 
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
     initial: 0,
   });
@@ -45,7 +45,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-slate-900 selection:text-white">
       {/* Back Link */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 lg:py-10">
         <Link
           href="/cars"
           className="flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-[0.2em] text-[10px] font-bold"
@@ -101,10 +101,10 @@ export default function CarDetailClient({ car }: { car: Car }) {
             ▶
           </Button>
         </div>
-        
+
         {/* Slide Counter Overlay */}
         <div className="absolute top-8 right-8 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full">
-           Gallery Collection
+          Gallery Collection
         </div>
       </section>
 
@@ -136,14 +136,14 @@ export default function CarDetailClient({ car }: { car: Car }) {
 
       {/* Main Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-20 grid lg:grid-cols-12 gap-12 lg:gap-16">
-        
+
         {/* Left: Details */}
         <div className="lg:col-span-8 space-y-12 md:space-y-16">
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-4">
-               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Automotive Asset</span>
-               <span className="text-slate-300">•</span>
-               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">{car.year} Model</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Automotive Asset</span>
+              <span className="text-slate-300">•</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">{car.year} Model</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold tracking-tight text-slate-900 leading-tight">
               {car.brand} <br />
@@ -169,16 +169,16 @@ export default function CarDetailClient({ car }: { car: Car }) {
 
           {/* Location & Showroom Features */}
           <div className="grid md:grid-cols-2 gap-8 pt-8 border-t border-slate-50">
-             <div className="p-8 rounded-[2rem] bg-slate-50 space-y-4">
-                <MapPin className="w-8 h-8 text-slate-900" />
-                <h3 className="font-bold text-lg uppercase tracking-wider">Showroom Presence</h3>
-                <p className="text-sm text-slate-500 font-medium">154 Obafemi Awolowo Way, Central Business District, Ikeja, Lagos. Available for viewing by appointment.</p>
-             </div>
-             <div className="p-8 rounded-[2rem] bg-slate-900 text-white space-y-4">
-                <Zap className="w-8 h-8 text-white" />
-                <h3 className="font-bold text-lg uppercase tracking-wider italic">Fast Delivery</h3>
-                <p className="text-sm text-white/60 font-medium italic">Priority shipping available nationwide. Fully insured transit to your doorstep.</p>
-             </div>
+            <div className="p-8 rounded-[2rem] bg-slate-50 space-y-4">
+              <MapPin className="w-8 h-8 text-slate-900" />
+              <h3 className="font-bold text-lg uppercase tracking-wider">Showroom Presence</h3>
+              <p className="text-sm text-slate-500 font-medium">154 Obafemi Awolowo Way, Central Business District, Ikeja, Lagos. Available for viewing by appointment.</p>
+            </div>
+            <div className="p-8 rounded-[2rem] bg-slate-900 text-white space-y-4">
+              <Zap className="w-8 h-8 text-white" />
+              <h3 className="font-bold text-lg uppercase tracking-wider italic">Fast Delivery</h3>
+              <p className="text-sm text-white/60 font-medium italic">Priority shipping available nationwide. Fully insured transit to your doorstep.</p>
+            </div>
           </div>
         </div>
 
@@ -193,15 +193,15 @@ export default function CarDetailClient({ car }: { car: Car }) {
             </div>
 
             <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 space-y-4">
-               <div className="flex items-center gap-3">
-                  <Info className="w-4 h-4 text-slate-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Availability</span>
-               </div>
-               <p className="text-sm font-bold text-slate-600 italic">Immediate delivery from our local inventory. Genuine documentation guaranteed.</p>
+              <div className="flex items-center gap-3">
+                <Info className="w-4 h-4 text-slate-400" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Availability</span>
+              </div>
+              <p className="text-sm font-bold text-slate-600 italic">Immediate delivery from our local inventory. Genuine documentation guaranteed.</p>
             </div>
 
             <div className="flex flex-col gap-4 pt-4">
-              <Button 
+              <Button
                 className="w-full h-16 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-bold uppercase tracking-widest text-xs shadow-xl shadow-slate-900/10 cursor-pointer"
                 onClick={() => {
                   const phoneNumber = "2348030523555";
@@ -220,7 +220,7 @@ export default function CarDetailClient({ car }: { car: Car }) {
             </div>
 
             <div className="text-center">
-               <p className="text-[8px] font-bold text-slate-400 uppercase tracking-[0.4em]">FGC MOTORS • EST. 2024</p>
+              <p className="text-[8px] font-bold text-slate-400 uppercase tracking-[0.4em]">FGC MOTORS • EST. 2024</p>
             </div>
           </div>
         </div>

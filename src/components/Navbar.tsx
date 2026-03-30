@@ -21,11 +21,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  
-  // Do not show navbar on admin pages or car details pages
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/cars/")) {
-    return null;
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +53,12 @@ export default function Navbar() {
   const navMutedColor = isHeroTransparent ? "text-white/90" : "text-muted-foreground";
   const navBorderColor = isHeroTransparent ? "border-white/30" : "border-foreground/30";
   const navLineColor = isHeroTransparent ? "bg-white" : "bg-foreground";
+
+  // Do not show navbar on admin or car details pages
+  const isCarDetailsPage = pathname?.startsWith("/cars/") && pathname !== "/cars/";
+  if (pathname?.startsWith("/admin") || isCarDetailsPage) {
+    return null;
+  }
 
   return (
     <header
@@ -233,11 +234,10 @@ export default function Navbar() {
                           </span>
                           <motion.span
                             style={{ color: "rgba(255,255,255,0.7)" }}
-                            className={`transition-all duration-300 ${
-                              isActive
+                            className={`transition-all duration-300 ${isActive
                                 ? "opacity-100 translate-x-0"
                                 : "opacity-0 -translate-x-2 group-hover:opacity-60 group-hover:translate-x-0"
-                            }`}
+                              }`}
                           >
                             →
                           </motion.span>
