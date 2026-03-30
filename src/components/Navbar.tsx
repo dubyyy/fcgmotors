@@ -22,8 +22,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   
-  // Do not show navbar on admin pages
-  if (pathname?.startsWith("/admin")) {
+  // Do not show navbar on admin pages or car details pages
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/cars/")) {
     return null;
   }
 
